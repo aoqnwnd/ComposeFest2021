@@ -121,6 +121,22 @@ private fun DefaultPreview() {
     }
 }
 
+// splash 와 같은 맨 처음 화면.
+@Preview(
+    showBackground = true,
+    widthDp = 320,
+    // 아래 2줄은 다크모드 미리보기를 추가하는 코드
+    uiMode = UI_MODE_NIGHT_YES,
+    name = "DefaultPreviewDark"
+)
+@Composable
+fun OnboardingPreview() {
+    BasicTheme {
+        OnboardingScreen(onContinueClicked = {})
+    }
+}
+
+// 처음 화면 구성.
 @Composable
 fun OnboardingScreen(onContinueClicked: () -> Unit) {
     Surface {
@@ -141,17 +157,4 @@ fun OnboardingScreen(onContinueClicked: () -> Unit) {
     }
 }
 
-@Preview(
-    showBackground = true,
-    widthDp = 320,
-    // 아래 2줄은 다크모드 미리보기를 추가하는 코드
-    uiMode = UI_MODE_NIGHT_YES,
-    name = "DefaultPreviewDark"
-)
-@Composable
-fun OnboardingPreview() {
-    BasicTheme {
-        OnboardingScreen(onContinueClicked = {})
-    }
-}
 
