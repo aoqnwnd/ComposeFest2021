@@ -21,6 +21,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.material.MaterialTheme
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ShareCompat
 import androidx.core.widget.NestedScrollView
@@ -29,6 +31,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.composethemeadapter.MdcTheme
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.samples.apps.sunflower.R
@@ -65,6 +68,24 @@ class PlantDetailFragment : Fragment() {
                         plantDetailViewModel.addPlantToGarden()
                         Snackbar.make(root, R.string.added_plant_to_garden, Snackbar.LENGTH_LONG)
                             .show()
+                    }
+                }
+            }
+
+            composeView.apply {
+                // 기본적으로 컴포즈는 ComposeView가 윈도우에서 분리될 때마다 컴포지션을 삭제한다.
+                // 이런 부분은 ComposeView가 프레그먼트내에서 사용될 때 여러가지 이유로 바람직 하지않다.
+
+                // AbstractComposeView.disposeComposition 메서드를 수동으로 호출하여 컴포지션을 수동으로 삭제할 수 있다.
+                // 또는 더 이상 필요하지 않을 때, 컴포지션을 자동으로 폐기하려면 다른 전략을 설정하거나
+                // setViewCompositionStrategy 메서드를 호출하여, 자신만의 전략을 만들 수 있다.
+                setViewCompositionStrategy(
+                    // View의 LifecycleOwner가 파괴될 때 컴포지션을 폐기 한다.
+                    ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+                )
+                setContent {
+                    MdcTheme {
+                        PlantDetailDescription(plantDetailViewModel)
                     }
                 }
             }
